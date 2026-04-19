@@ -33,7 +33,8 @@ func newRootCmd() *cobra.Command {
 		Long: `Orchard is a CI orchestration tool that manages virtual machines
 on Apple Silicon hardware using the Virtualization.framework.
 
-See https://github.com/cirruslabs/orchard for upstream documentation.`,
+See https://github.com/cirruslabs/orchard for upstream documentation.
+Personal fork: https://github.com/nicholasgasior/orchard`,
 		SilenceUsage:  true,
 		SilenceErrors: true, // print errors ourselves for consistent formatting
 	}
