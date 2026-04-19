@@ -31,8 +31,11 @@ func newRootCmd() *cobra.Command {
 		Use:   "orchard",
 		Short: "Orchard — a CI orchestration tool for Apple Silicon",
 		Long: `Orchard is a CI orchestration tool that manages virtual machines
-on Apple Silicon hardware using the Virtualization.framework.`,
-		SilenceUsage: true,
+on Apple Silicon hardware using the Virtualization.framework.
+
+See https://github.com/cirruslabs/orchard for upstream documentation.`,
+		SilenceUsage:  true,
+		SilenceErrors: true, // print errors ourselves for consistent formatting
 	}
 
 	cmd.AddCommand(
