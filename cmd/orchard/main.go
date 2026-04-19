@@ -3,30 +3,51 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/cirruslabs/orchard/internal/command"
 	"os"
 	"os/signal"
+	"syscall"
+
+	"github.com/spf13/cobra"
+)
+
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
 )
 
 func main() {
-	// Set up a signal-interruptible context
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer cancel()
 
-	interruptCh := make(chan os.Signal, 1)
-	signal.Notify(interruptCh, os.Interrupt)
-
-	go func() {
-		select {
-		case <-interruptCh:
-			cancel()
-		case <-ctx.Done():
-		}
-	}()
-
-	// Run the command
-	if err := command.NewRootCmd().ExecuteContext(ctx); err != nil {
-		_, _ = fmt.Fprintln(os.Stderr, err)
-
+	if err := newRootCmd().ExecuteContext(ctx); err != nil {
+		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
+	}
+}
+
+func newRootCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "orchard",
+		Short: "Orchard — a CI orchestration tool for Apple Silicon",
+		Long: `Orchard is a CI orchestration tool that manages virtual machines
+on Apple Silicon hardware using the Virtualization.framework.`,
+		SilenceUsage: true,
+	}
+
+	cmd.AddCommand(
+		newVersionCmd(),
+	)
+
+	return cmd
+}
+
+func newVersionCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:   "version",
+		Short: "Print version information",
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Fprintf(cmd.OutOrStdout(), "orchard version %s (commit: %s, built: %s)\n", version, commit, date)
+		},
 	}
 }
