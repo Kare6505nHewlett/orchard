@@ -37,6 +37,11 @@ See https://github.com/cirruslabs/orchard for upstream documentation.
 Personal fork: https://github.com/nicholasgasior/orchard`,
 		SilenceUsage:  true,
 		SilenceErrors: true, // print errors ourselves for consistent formatting
+		// CompletionOptions disables the auto-generated completion command
+		// which I don't need in my personal setup.
+		CompletionOptions: cobra.CompletionOptions{
+			DisableDefaultCmd: true,
+		},
 	}
 
 	cmd.AddCommand(
