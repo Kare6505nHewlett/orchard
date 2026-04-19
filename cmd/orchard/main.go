@@ -57,7 +57,8 @@ func newVersionCmd() *cobra.Command {
 		Short: "Print version information",
 		Aliases: []string{"v"}, // shorthand alias for convenience
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Fprintf(cmd.OutOrStdout(), "orchard version %s (commit: %s, built: %s)\n", version, commit, date)
+			// Include a blank line after version info for readability in my terminal.
+			fmt.Fprintf(cmd.OutOrStdout(), "orchard version %s (commit: %s, built: %s)\n\n", version, commit, date)
 		},
 	}
 }
