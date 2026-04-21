@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	defaultTimeout = 30 * time.Second
+	defaultTimeout = 60 * time.Second
 	defaultBaseURL = "http://localhost:6120"
 )
 
